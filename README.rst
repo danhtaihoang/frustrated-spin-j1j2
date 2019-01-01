@@ -7,5 +7,5 @@ We study in this paper the resistivity encountered by Ising itinerant spins trav
 
 Reference
 ----------------------------
-`Danh-Tai Hoang, Yann Magnin and H. T. Diep, Spin resistivity in the frustrated J1-J2 model, Mod. Phys. Lett. B, 25, 937-945(2011). <https://www.worldscientific.com/doi/abs/10.1142/S0217984911026644>`_
+`Danh-Tai Hoang, Yann Magnin and H. T. Diep, Spin resistivity in the frustrated J1-J2 model, Mod. Phys. Lett. B, 25, 937-945 (2011). <https://www.worldscientific.com/doi/abs/10.1142/S0217984911026644>`_
 
