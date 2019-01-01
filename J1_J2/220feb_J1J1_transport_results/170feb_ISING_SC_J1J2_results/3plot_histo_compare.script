@@ -1,0 +1,16 @@
+#!/bin/sh
+
+gnuplot -persist << EOF
+set term postscript enhanced color "Times-Roman" 26
+set autoscale
+set key right top
+set pointsize 1
+set xlabel "E"
+set xrange [-1.9:-1.1]
+set ylabel "P(E)"
+set output "P ISING.eps"
+plot "value_P_at_To_0.3.dat" u 2:3 notitle w p pt 7 lt -1,\
+"value_P_at_To_0.85.dat" u 2:3 notitle w p pt 65 lt 3,\
+"value_P_at_To_1.0.dat" u 2:3 notitle w p pt 11 lt 1
+
+EOF

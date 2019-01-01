@@ -1,0 +1,13 @@
+#!/bin/sh
+
+gnuplot -persist << EOF
+set term postscript enhanced color "Times-Roman" 14
+set autoscale
+set key right top
+set pointsize 1
+set xlabel "i_recherche_gs"
+set ylabel "E"
+set output "EN_in_time_recherche_gs.ps"
+plot "EN_recherche_gs.dat" u 1:2 t "E" w p pt 7 lt -1
+
+EOF

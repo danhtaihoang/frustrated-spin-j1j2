@@ -1,0 +1,22 @@
+#!/bin/sh
+
+gnuplot -persist << EOF
+set term postscript enhanced color "Times-Roman" 26
+set autoscale
+set key right top
+set pointsize 1
+set xlabel "T"
+set ylabel "R"
+set output "Rcompare.eps"
+set title "J1J2 RELAX J1=-0.26 "
+plot "average_transport_0.8_0.26_relax.dat" u 1:2 t "D1=0.8" w p lt -1 pt 7,\
+"average_transport_1_0.26_relax.dat" u 1:2 t "D1=1" w p lt 3 pt 65
+
+EOF
+
+
+
+
+
+
+

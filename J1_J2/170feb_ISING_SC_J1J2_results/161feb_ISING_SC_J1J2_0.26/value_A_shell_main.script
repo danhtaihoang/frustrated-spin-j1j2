@@ -1,0 +1,146 @@
+#!/bin/sh
+# Chuong ve dong thoi 2 hoac 3 do thi (dung de tim hieu ung)
+# this is script-shell for collection result from osaka
+
+# ===========================================================================================
+# Lua chon buoc tien hanh
+# ===========================================================================================
+
+echo -n "Moi nhap thu tu buoc (1 neu la compile voi value A, "
+echo -n "2 neu la ve do thi M1,M2,Ksi1,Ksi2): " 
+read number_buoc
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# ===========================================================================================
+# ===========================================================================================
+#  ****************** BUOC COMPILE ******************
+# ===========================================================================================
+# ===========================================================================================
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+# ===========================================================================================
+# Nhap cac gia tri vao
+# ===========================================================================================
+if [ $number_buoc -eq 1 ]
+then
+echo "******* CHUONG TRINH MODIFIER VALUE A-STMP ****** BUOC COMPILE"
+
+clear
+rm -r bank_config_out
+rm -r config_out
+rm *.dat
+rm a.out
+
+echo -n "Value Amin = "
+read Amin
+
+echo -n "Value Amax = "
+read Amax
+
+echo -n "Value nA = "
+read nA
+
+if [ $nA -eq 1 ]
+then
+delA=0
+else
+delA=$(echo "scale=4; ($Amax-$Amin)/($nA-1)" | bc)
+fi
+echo "delA=$delA"
+
+# ===========================================================================================
+# Tao cac thu muc, compile lan luot tung thu muc
+# ===========================================================================================
+mkdir new_folder
+cp main_heisenberg_BCC_F.f90 new_folder
+cp parameter.in new_folder
+cp job new_folder
+
+i_folder=1
+while [ $i_folder -le $nA ]
+do
+cp -r new_folder $i_folder
+
+A=$(echo "scale=4; $Amin+($i_folder-1)*$delA" | bc)
+
+sed -i "s/'A_stmp                    '  1.0000/'A_stmp                    '  $A/g" $i_folder/parameter.in
+
+echo "running folder $i_folder"
+cd $i_folder
+gfortran -Wall -fdefault-integer-8 -fdefault-real-8 main_heisenberg_BCC_F.f90
+#qsub job
+./a.out
+cd ..
+
+i_folder=$(echo "scale=0; $i_folder+1" | bc)
+
+done
+
+rm -r new_folder
+
+fi
+
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# ===========================================================================================
+# ===========================================================================================
+#  ****************** BUOC VE DO THI DE SO SANH, TIM RA GIA TRI CUA A  ******************
+# ===========================================================================================
+# ===========================================================================================
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+# ===========================================================================================
+# Nhap cac gia tri vao
+# ===========================================================================================
+if [ $number_buoc -eq 2 ]
+then
+echo "BUOC VE DO THI SO SANH, TIM GIA TRI CUA A"
+
+echo -n "Value of nA = "
+read nA
+
+i_folder=1
+while [ $i_folder -le $nA ]
+do
+
+# ===========================================================================================
+# VE DO THI M1,M2,M
+# ===========================================================================================
+gnuplot -persist << EOF
+set term postscript enhanced color "Times-Roman" 14
+set autoscale
+set key right top
+set pointsize 1
+set xlabel "T"
+set ylabel "M"
+set output "$i_folder M1 M2 and M.ps"
+set title "M in T"
+plot "$i_folder/average_thermal.dat" u 1:4 t "M1" w p pt 7 lt 3,\
+"$i_folder/average_thermal.dat" u 1:5 t "M2" w p pt 9 lt 1,\
+"$i_folder/average_thermal.dat" u 1:3 t "M" w p pt 11 lt -1
+EOF
+
+# ===========================================================================================
+# VE DO THI Ksi1,Ksi2,Ksi
+# ===========================================================================================
+gnuplot -persist << EOF
+set term postscript enhanced color "Times-Roman" 14
+set autoscale
+set key right top
+set pointsize 1
+set xlabel "T"
+set ylabel "Ksi"
+set output "$i_folder Ksi1 Ksi2 and Ksi.ps"
+set title "Ksi in T"
+plot "$i_folder/average_thermal.dat" u 1:8 t "Ksi1" w p pt 7 lt 3,\
+"$i_folder/average_thermal.dat" u 1:9 t "Ksi2" w p pt 9 lt 1,\
+"$i_folder/average_thermal.dat" u 1:7 t "Ksi" w p pt 11 lt -1
+EOF
+
+i_folder=$(echo "scale=0; $i_folder+1" | bc)
+
+done
+
+fi
+# ================================= THE END ============================================
+
+
+

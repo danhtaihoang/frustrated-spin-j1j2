@@ -1,0 +1,13 @@
+#!/bin/sh
+
+gnuplot -persist << EOF
+set term postscript enhanced color "Times-Roman" 14
+set autoscale
+set key right top
+set pointsize 1
+set xlabel "T"
+set ylabel "R"
+set output "R.ps"
+plot "< paste average_thermal.dat average_transport.dat" u 1:9 t "R" w p pt 7 lt -1
+
+EOF

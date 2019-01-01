@@ -1,0 +1,14 @@
+#!/bin/sh
+
+gnuplot -persist << EOF
+set term postscript enhanced color "Times-Roman" 26
+set autoscale
+set key right top
+set pointsize 1
+set xlabel "E"
+set ylabel "P(E)"
+set output "PE compare.eps"
+plot "histogram_new_0.20.dat" u 2:3 w p t "0.20" pt 7 lt -1,\
+"histogram_new_0.26.dat" u 2:3 w p t "0.26" pt 65 lt 3
+
+EOF

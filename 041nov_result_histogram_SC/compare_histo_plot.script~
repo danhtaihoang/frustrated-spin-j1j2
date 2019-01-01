@@ -1,0 +1,14 @@
+#!/bin/sh
+
+gnuplot -persist << EOF
+set term postscript eps enhanced color "Times-Roman" 25
+set autoscale
+set key right top
+set pointsize 0.8
+set xlabel "E"
+set ylabel "P(E)"
+set output "histo_P1_P2_P3_in_E.eps"
+plot "histogram_20.20.6.dat" u 2:3 notitle w p pt 7 lt -1,\
+"histogram_20.20.10.dat" u 2:3 notitle w p pt 11 lt -1,\
+"histogram_30.30.6.dat" u 2:3 notitle w p pt 65 lt -1
+EOF

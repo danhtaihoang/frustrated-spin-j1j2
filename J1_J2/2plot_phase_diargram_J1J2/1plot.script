@@ -1,0 +1,16 @@
+#!/bin/sh
+
+gnuplot -persist << EOF
+set term postscript enhanced color "Times-Roman" 26
+set autoscale
+set key right top
+set pointsize 1.0
+set xlabel "J1"
+set ylabel "Tc"
+set yrange [0.5:3.2]
+set output "Tc_J1.eps"
+set title "Tc in J1"
+plot "a.dat" u 1:2 notitle w p lt -1 pt 7
+EOF
+
+

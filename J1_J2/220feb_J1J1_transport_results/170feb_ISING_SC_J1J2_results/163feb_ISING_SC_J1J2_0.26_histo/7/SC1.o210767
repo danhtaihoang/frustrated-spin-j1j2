@@ -1,0 +1,5 @@
+rm: ne peut enlever `config_out': Aucun fichier ou répertoire de ce type
+rm: ne peut enlever `bank_config_out': Aucun fichier ou répertoire de ce type
+rm: ne peut enlever `*.dat*': Aucun fichier ou répertoire de ce type
+ GS2
+ iT=           1
